@@ -1,0 +1,18 @@
+# Configuración local y credenciales
+.env
+.env.*
+!.env.example
+
+# Dependencias y archivos generados
+.local/
+node_modules/
+target/
+dist/
+.pnpm-store/
+*.log
+
+# Editor y sistema operativo
+.idea/
+.vscode/
+*.iml
+.DS_Store
