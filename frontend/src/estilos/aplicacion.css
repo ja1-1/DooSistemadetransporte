@@ -98,7 +98,11 @@ td .boton + .boton { margin-left: 6px; }
 .detalle-registro { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin: 0; padding: 16px; }
 .detalle-registro dt { font-size: .8rem; color: var(--gris); }
 .detalle-registro dd { margin: 2px 0 0; overflow-wrap: anywhere; white-space: pre-wrap; }
-.resultado-operacion > h3, .resultado-operacion > p, .resultado-operacion > ul { margin: 12px 16px; }
+.descripcion-incidencia { max-width: 42rem; }
+.descripcion-incidencia p { margin: 0; }
+.cambios-incidencia { display: grid; gap: 5px; margin: 8px 0 0; padding: 0; list-style: none; color: var(--gris); font-size: .85rem; }
+.cambios-incidencia strong { font-weight: 600; }
+.resultado-operacion > h3, .resultado-operacion > p, .resultado-operacion > ul, .resultado-operacion > .resumen-incidencia { margin: 12px 16px; }
 .credencial-temporal { margin: 16px; padding: 12px; border: 1px solid #ecd59a; background: #fff8e6; border-radius: 4px; }
 .credencial-temporal output { display: block; font: 1.1rem monospace; user-select: all; }
 

@@ -1,3 +1,5 @@
+import { fechaLegible, resumenDescripcion } from "../componentes/presentacion.js";
+
 const ADMIN = ["ADMINISTRADOR"];
 const GESTION = ["ADMINISTRADOR", "JEFE_OPERACION"];
 const JEFE = ["JEFE_OPERACION"];
@@ -500,7 +502,7 @@ export const modulos = [
               registro.salidaId,
               [
                 registro.salidaId,
-                `${registro.instanteOcurrencia} · ${registro.descripcion}`,
+                `${fechaLegible(registro.instanteOcurrencia)} · ${resumenDescripcion(registro.descripcion)}`,
               ],
             ]),
           ).values(),

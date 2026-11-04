@@ -4,6 +4,7 @@ import {
   consultarRecurso,
 } from "../servicios/api/recursos.js";
 import { autorizado, modulos } from "../modulos/definiciones.js";
+import { fechaLegible, resumenDescripcion } from "./presentacion.js";
 
 const Referencias = createContext(null);
 export const nombreRegistro = (registro) =>
@@ -12,9 +13,9 @@ export const nombreRegistro = (registro) =>
   registro.correo ||
   [registro.primerNombre, registro.primerApellido].filter(Boolean).join(" ") ||
   registro.nombreRuta ||
-  registro.descripcion ||
+  (registro.descripcion && resumenDescripcion(registro.descripcion)) ||
   (registro.fechaInicio
-    ? `Asignación del ${registro.fechaInicio}`
+    ? `Asignación del ${fechaLegible(registro.fechaInicio)}`
     : "Registro seleccionado");
 const puedeConsultar = (sesion, recurso) => {
   const modulo = modulos.find((item) => item.id === recurso);
@@ -26,7 +27,7 @@ export function ProveedorReferencias({ sesion, revision, children }) {
     const consultas = new Map();
     async function describir(recurso, datos) {
       if (recurso === "asignaciones")
-        return `${await nombre("vehiculos", datos.vehiculoId)} · ${await nombre("conductores", datos.conductorId)} · ${datos.fechaInicio}`;
+        return `${await nombre("vehiculos", datos.vehiculoId)} · ${await nombre("conductores", datos.conductorId)} · ${fechaLegible(datos.fechaInicio)}`;
       if (recurso === "programaciones-ruta")
         return `${await nombre("rutas", datos.rutaId)} · ${datos.horario.horaSalida}`;
       if (recurso === "municipios" && datos.departamento)
@@ -39,7 +40,7 @@ export function ProveedorReferencias({ sesion, revision, children }) {
       if (recurso === "conductores")
         return `${nombreRegistro(datos)} · ${datos.cedula}`;
       if (recurso === "salidas")
-        return `${datos.nombreRuta} · ${datos.ventana.instanteSalidaProgramado}`;
+        return `${datos.nombreRuta} · ${fechaLegible(datos.ventana.instanteSalidaProgramado)}`;
       return nombreRegistro(datos);
     }
     function recordar(recurso, datos) {

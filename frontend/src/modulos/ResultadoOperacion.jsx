@@ -1,5 +1,6 @@
 import { modulos } from "./definiciones.js";
-import { TablaRegistros } from "../componentes/DetalleRegistro.jsx";
+import { DescripcionIncidencia, TablaRegistros } from "../componentes/DetalleRegistro.jsx";
+import { fechaLegible } from "../componentes/presentacion.js";
 
 export default function ResultadoOperacion({ datos, accion, alCerrar }) {
   if (datos == null) return null;
@@ -58,7 +59,7 @@ export default function ResultadoOperacion({ datos, accion, alCerrar }) {
           <ul>
             {Object.entries(datos.rechazos).map(([instante, mensaje]) => (
               <li key={instante}>
-                <strong>{instante}</strong>: {mensaje}
+                <strong>{fechaLegible(instante)}</strong>: {mensaje}
               </li>
             ))}
           </ul>
@@ -78,7 +79,10 @@ export default function ResultadoOperacion({ datos, accion, alCerrar }) {
         </>
       )}
       {datos.tipoIncidenciaId && (
-        <p>Incidencia registrada: {datos.descripcion}</p>
+        <div className="resumen-incidencia">
+          <strong>Incidencia registrada</strong>
+          <DescripcionIncidencia descripcion={datos.descripcion} />
+        </div>
       )}
     </section>
   );

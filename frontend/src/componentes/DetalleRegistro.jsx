@@ -1,5 +1,6 @@
 import { dias, valorEn } from "../modulos/definiciones.js";
 import { NombreReferencia, nombreRegistro } from "./Referencias.jsx";
+import { describirIncidencia, fechaLegible } from "./presentacion.js";
 
 const etiquetas = {
   activo: "Activo",
@@ -23,7 +24,34 @@ export function mostrarValor(valor) {
   if (typeof valor === "boolean") return valor ? "Sí" : "No";
   if (Array.isArray(valor))
     return valor.map((dia) => nombreDia[dia] || dia).join(", ");
-  return String(valor);
+  return String(fechaLegible(valor));
+}
+
+export function DescripcionIncidencia({ descripcion }) {
+  const { motivo, cambios } = describirIncidencia(descripcion);
+  return (
+    <div className="descripcion-incidencia">
+      <p>{motivo || "—"}</p>
+      {cambios.length > 0 && (
+        <ul className="cambios-incidencia">
+          {cambios.map((cambio, indice) => (
+            <li key={`${cambio.etiqueta}-${indice}`}>
+              <strong>{cambio.etiqueta}:</strong>{" "}
+              {cambio.recurso ? (
+                <NombreReferencia recurso={cambio.recurso} id={cambio.id} />
+              ) : cambio.valor}
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
+  );
+}
+
+function ValorPresentado({ campo, valor }) {
+  return campo === "descripcion"
+    ? <DescripcionIncidencia descripcion={valor} />
+    : mostrarValor(valor);
 }
 
 export function TablaRegistros({
@@ -56,7 +84,7 @@ export function TablaRegistros({
                     {columna.recurso && valor ? (
                       <NombreReferencia recurso={columna.recurso} id={valor} />
                     ) : (
-                      mostrarValor(valor)
+                      <ValorPresentado campo={columna.campo} valor={valor} />
                     )}
                   </td>
                 );
@@ -146,7 +174,7 @@ export default function DetalleRegistro({
               ) : resolverReferencias && recurso && valor ? (
                 <NombreReferencia recurso={recurso} id={valor} />
               ) : (
-                mostrarValor(valor)
+                <ValorPresentado campo={ruta} valor={valor} />
               )}
             </dd>
           </div>
